@@ -1,0 +1,64 @@
+/* Add additional stylesheets below
+-------------------------------------------------- */
+/*
+  Bootstrap's documentation styles
+  Special styles for presenting Bootstrap's documentation and examples
+*/
+
+/* Footer
+-------------------------------------------------- */
+
+.footer {
+  padding: 70px 0;
+  margin-top: 70px;
+  border-top: 1px solid #e5e5e5;
+  background-color: #f5f5f5;
+}
+.footer p {
+  margin-bottom: 0;
+  color: #777;
+}
+.footer-links {
+  margin: 10px 0;
+}
+.footer-links li {
+  display: inline;
+  margin-right: 10px;
+}
+
+.footer-fixed-bottom {
+  position: fixed;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 1030;
+  margin-bottom: 0;
+}
+
+/* Responsive footer
+-------------------------------------------------*/
+
+@media (max-width: 979px) {
+  body {
+    padding-bottom: 0;
+  }
+  .footer-fixed-bottom {
+    position: static;
+  }
+}
+
+/* Justified p
+-------------------------------------------------*/
+
+[class*="span"] p {
+  text-align: justify;
+}
+
+/* Body for navbar
+-------------------------------------------------*/
+
+body {
+  padding-top: 60px;
+  padding-bottom: 220px;
+  background: #FFFAF5;
+}

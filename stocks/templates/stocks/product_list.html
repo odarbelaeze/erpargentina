@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %} Productos {% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <h1>Inventario</h1>
+</div>
+
+<table class="table table-bordered table-striped table-hover" id="products-container">
+    <thead>
+        <tr>
+            <th> Código </th>
+            <th> Nombre </th>
+            <th> Precio </th>
+            <th> Cantidad </th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for product in product_list %} 
+            {% if product.available %}
+                <tr>
+            {% else %}
+                <tr class="error">
+            {% endif %}
+                <td> {{ product.reference }} </td>
+                <td> {{ product.name }} </td>
+                <td> <span class="pull-right"> {{ product.get_price }} </span> </td>
+                <td> <span class="pull-right"> 
+                    {{ product.stock_level }} <a href="#">
+                    {% if user.is_authenticated %} 
+                        <i class="icon-plus"></i></a> 
+                    {% endif %}
+                </span> </td>
+            </tr>
+        {% empty %}
+            <div class="alert alert-info">
+                No hay productos para mostrar.
+            </div>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock content %}
