@@ -47,12 +47,14 @@ class StockAdmin(admin.ModelAdmin):
     model = Stock
     inlines = [StockEventInline, ]
     list_display = ['__unicode__', 'warehouse', 'product', 'level']
+    list_editable = ['level']
     list_filter = ['warehouse', 'product']
 
 class StockEventAdmin(admin.ModelAdmin):
     """docstring for StockEventAdmin"""
     model = StockEvent
-    list_display = ['__unicode__', 'stock', 'date', 'level']
+    list_display = ['__unicode__', 'reason', 'date', 'level']
+    list_filter = ['stock__product__name', 'stock', 'stock__warehouse__name']
 
 
         

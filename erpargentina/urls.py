@@ -16,5 +16,5 @@ urlpatterns = patterns('',
 )
 
 urlpatterns += patterns('',
-    url(r'^productos/', include('stocks.urls')),
+    url(r'^inventario/', include('stocks.urls')),
 )

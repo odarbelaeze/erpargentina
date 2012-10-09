@@ -109,6 +109,10 @@ class Stock(models.Model):
         verbose_name_plural = "Existencias"
         unique_together = ('warehouse', 'product')
 
+    def save_log(self, reason, description = "", *args, **kwargs):
+        super(Stock, self).save(*args, **kwargs)
+        StockEvent(stock = self, reason = reason, description = description).save()
+
     def save(self, *args, **kwargs):
         super(Stock, self).save(*args, **kwargs)
         StockEvent(stock = self).save()
@@ -128,7 +132,7 @@ class StockEvent(models.Model):
     date.verbose_name = "Fecha"
     reason.verbose_name = "Razón del cambio"
     description.verbose_name = "Descipcion detallada"
-    level.verbose_name = "Cantidad"
+    level.verbose_name = "Nueva Cantidad"
 
     reason.default = "Ajuste administrativo."
     description.default = """\
@@ -139,7 +143,7 @@ o a ingresar el inventario inicial. \
 
     class Meta():
         """docstring for Meta"""
-        ordering = ['stock', 'date']
+        ordering = ['stock', '-date']
         get_latest_by = 'date'
         verbose_name = "Evento de inventario"
         verbose_name_plural = "Eventos de inventario"
