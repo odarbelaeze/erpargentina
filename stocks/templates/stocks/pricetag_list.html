@@ -9,8 +9,8 @@
 {% block navbar %}
 <ul class="nav nav-pills pull-right">
     <li> <a href="{% url warehouse-list %}"> Bodegas </a> </li>
-    <li class="active"> <a href="{% url product-list %}"> Productos </a> </li>
-    <li> <a href="{% url pricetag-list %}"> Precios </a> </li>
+    <li> <a href="{% url product-list %}"> Productos </a> </li>
+    <li class="active"> <a href="{% url pricetag-list %}"> Precios </a> </li>
     <li> <a href="{% url stock-list %}"> Existencias </a> </li>
     <li> <a href="{% url stockevent-list %}"> Registro de existencias </a> </li>
 </ul>
@@ -23,23 +23,17 @@
 <table class="table table-bordered table-striped table-hover" id="products-container">
     <thead>
         <tr>
-            <th class="span2"> Código </th>
-            <th class="span6"> Nombre </th>
-            <th class="span2"> Precio </th>
-            <th class="span2"> Disponibles </th>
+            <th class="span3"> Fecha </th>
+            <th class="span6"> Producto </th>
+            <th class="span3"> Precio </th>
         </tr>
     </thead>
     <tbody>
-    {% for product in product_list %} 
-        {% if product.available %}
+    {% for pricetag in pricetag_list %}
         <tr>
-        {% else %}
-        <tr class="error">
-        {% endif %}
-            <td> {{ product.reference }} </td>
-            <td> <a href="{% url product-detail product.id %}"> {{ product.name }} </a> </td>
-            <td> <span class="pull-right"> {{ product.price|floatformat:2 }} </span> </td>
-            <td> <span class="pull-right"> {{ product.stock_level }} </span> </td>
+            <td> {{ pricetag.date|date:"D N d y (G:i)"|title }} </td>
+            <td> <a href="{% url pricetag-detail pricetag.id %}"> {{ pricetag.product }} </a> </td>
+            <td> {{ pricetag.price }} </td>
         </tr>
     {% empty %}
         <div class="alert alert-info">
