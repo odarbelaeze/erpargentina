@@ -1,8 +1,4 @@
-{% extends "base.html" %}
-
-<!-- Le title -->
-
-{% block title %} Inventario {% endblock %}
+{% extends "stocks/base_list.html" %}
 
 <!-- Le navigation bar -->
 
@@ -16,47 +12,43 @@
 </ul>
 {% endblock navbar %}
 
-<!-- Le content -->
+<!-- Le table_items -->
 
-{% block content %}
+{% block table_items %}
+<thead>
+    <tr>
+        <th class="span2"> Código </th>
+        <th class="span6"> Nombre </th>
+        <th class="span2"> Precio </th>
+        <th class="span2"> Disponibles </th>
+    </tr>
+</thead>
+<tbody>
+{% for product in product_list %} 
+    {% if product.available %}
+    <tr>
+    {% else %}
+    <tr class="error">
+    {% endif %}
+        <td> {{ product.reference }} </td>
+        <td> <a href="{% url product-detail product.id %}"> {{ product.name }} </a> </td>
+        <td> <span class="pull-right"> {{ product.price|floatformat:2 }} </span> </td>
+        <td> 
+            <a href="{% url product-detail product.id %}"> <i class="icon-chevron-right pull-right"></i> </a>
+            <span class="pull-right"> {{ product.stock_level }} </span> 
+        </td>
+    </tr>
+{% endfor %}
+</tbody>
+{% endblock table_items %}
 
-<table class="table table-bordered table-striped table-hover" id="products-container">
-    <thead>
-        <tr>
-            <th class="span2"> Código </th>
-            <th class="span6"> Nombre </th>
-            <th class="span2"> Precio </th>
-            <th class="span2"> Disponibles </th>
-        </tr>
-    </thead>
-    <tbody>
-    {% for product in product_list %} 
-        {% if product.available %}
-        <tr>
-        {% else %}
-        <tr class="error">
-        {% endif %}
-            <td> {{ product.reference }} </td>
-            <td> <a href="{% url product-detail product.id %}"> {{ product.name }} </a> </td>
-            <td> <span class="pull-right"> {{ product.price|floatformat:2 }} </span> </td>
-            <td> <span class="pull-right"> {{ product.stock_level }} </span> </td>
-        </tr>
-    {% empty %}
-        <div class="alert alert-info">
-            No hay productos para mostrar.
-        </div>
-    {% endfor %}
-    </tbody>
-</table>
+<!-- Le error message -->
 
-{% if is_paginated %}
-<div class="pagination pagination-centered">
-    <ul>
-    {% for p in paginator.page_range %}
-        <li> <a href="?page={{ p }}"> {{ p }} </a> </li>       
-    {% endfor %}
-    </ul>
-</div>
-{% endif %}
+{% block table_empty %}
+    {% if product_list.empty %} 
+    <div class="alert alert-info">
+        No hay productos para mostrar.
+    </div>
+    {% endif %}
+{% endblock table_empty %}
 
-{% endblock content %}

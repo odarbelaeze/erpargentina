@@ -2,19 +2,10 @@ from django.conf.urls import patterns, url
 from django.core.urlresolvers import reverse
 from django.views.generic import RedirectView
 
-from stocks.views import WareHouseList
-from stocks.views import ProductList
-from stocks.views import PriceTagList
-from stocks.views import StockList
-from stocks.views import StockEventList
-from stocks.views import WareHouseDetail
-from stocks.views import ProductDetail
-from stocks.views import PriceTagDetail
-from stocks.views import StockDetail
-from stocks.views import StockEventDetail
+from stocks.views import *
 
 urlpatterns = patterns('',
-    url(r'^$', RedirectView.as_view(url = 'product-list')),
+    url(r'^$', RedirectView.as_view(url = 'productos/', permanent = False)),
     url(r'^bodegas/$', WareHouseList.as_view(), name='warehouse-list'),
     url(r'^productos/$', ProductList.as_view(), name='product-list'),
     url(r'^precios/$', PriceTagList.as_view(), name='pricetag-list'),

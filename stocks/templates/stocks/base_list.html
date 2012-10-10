@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+<!-- Le title -->
+
+{% block title %} Inventario {% endblock %}
+
+{% block navbar %} {% endblock navbar %}
+
+{% block content %}
+
+<table class="table table-bordered table-striped table-hover" id="products-container">
+    {% block table_items %}
+
+    {% endblock table_items %}
+</table>
+
+{% block table_empty %}
+
+{% endblock table_empty %}
+
+{% block paginator %}
+	{% if is_paginated %}
+	<div class="pagination pagination-centered">
+	    <ul>
+	    {% for p in paginator.page_range %}
+	        <li> <a href="?page={{ p }}"> {{ p }} </a> </li>       
+	    {% endfor %}
+	    </ul>
+	</div>
+	{% endif %}
+{% endblock paginator %}
+
+
+{% endblock content %}
