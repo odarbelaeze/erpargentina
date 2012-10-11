@@ -1,8 +1,4 @@
-{% extends "base.html" %}
-
-<!-- Le title -->
-
-{% block title %} Inventario {% endblock %}
+{% extends "stocks/base_list.html" %}
 
 <!-- Le navigation bar -->
 
@@ -16,43 +12,35 @@
 </ul>
 {% endblock navbar %}
 
-<!-- Le content -->
+<!-- Le table_items -->
 
-{% block content %}
-
-<table class="table table-bordered table-striped table-hover" id="products-container">
-    <thead>
-        <tr>
-            <th class="span2"> Fecha </th>
-            <th class="span3"> Bodega </th>
-            <th class="span4"> Producto </th>
-            <th class="span2"> Cantidad final </th>
-        </tr>
-    </thead>
-    <tbody>
+{% block table_items %}
+<thead>
+    <tr>
+        <th class="span2"> Fecha </th>
+        <th class="span4"> Bodega </th>
+        <th class="span4"> Producto </th>
+        <th class="span2"> Cantidad final </th>
+    </tr>
+</thead>
+<tbody>
     {% for stockevent in stockevent_list %}
-        <tr>
-            <td> {{ stockevent.date|date:"D N d y (G:i)"|title }} </td>
-            <td> <a href="{% url warehouse-detail stockevent.stock.warehouse.id %}"> {{ stockevent.stock.warehouse }} </a> </td>
-            <td> <a href="{% url stockevent-detail stockevent.id %}"> {{ stockevent.stock.product }} </a> </td>
-            <td> {{ stockevent.level }} </td>
-        </tr>
-    {% empty %}
-        <div class="alert alert-info">
-            No hay productos para mostrar.
-        </div>
+    <tr>
+        <td> <a href="{% url stockevent-detail stockevent.id %}"> {{ stockevent.date|date:"D N d y (G:i)"|title }} </a> </td>
+        <td> <a href="{% url warehouse-detail stockevent.stock.warehouse.id %}"> {{ stockevent.stock.warehouse }} </a> </td>
+        <td> <a href="{% url product-detail stockevent.stock.product.id %}"> {{ stockevent.stock.product }} </a> </td>
+        <td> <span class="pull-right"> {{ stockevent.level }} </span> </td>
+    </tr>
     {% endfor %}
-    </tbody>
-</table>
+</tbody>
+{% endblock table_items %}
 
-{% if is_paginated %}
-<div class="pagination pagination-centered">
-    <ul>
-    {% for p in paginator.page_range %}
-        <li> <a href="?page={{ p }}"> {{ p }} </a> </li>       
-    {% endfor %}
-    </ul>
-</div>
-{% endif %}
+<!-- Le error message -->
 
-{% endblock content %}
+{% block table_empty %}
+    {% if stockevent_list.empty %} 
+    <div class="alert alert-info">
+        No hay registros para mostrar.
+    </div>
+    {% endif %}
+{% endblock table_empty %}

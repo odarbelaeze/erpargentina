@@ -15,23 +15,23 @@ class Index(TemplateView):
 	
 class WareHouseList(ListView):
 	model = WareHouse
-	paginate_by = 20
+	paginate_by = 15
 
 class ProductList(ListView):
 	model = Product
-	paginate_by = 20
+	paginate_by = 15
 
 class PriceTagList(ListView):
 	model = PriceTag
-	paginate_by = 20
+	paginate_by = 15
 
 class StockList(ListView):
 	model = Stock
-	paginate_by = 20
+	paginate_by = 15
 
 class StockEventList(ListView):
 	model = StockEvent
-	paginate_by = 20
+	paginate_by = 15
 
 class WareHouseDetail(DetailView):
 	model = WareHouse

@@ -117,6 +117,8 @@ class Stock(models.Model):
         super(Stock, self).save(*args, **kwargs)
         StockEvent(stock = self).save()
 
+    def reference(self):
+        return "{:05d}".format(self.id)
 
     def __unicode__(self):
         return "Existencia de {s.product:s} en {s.warehouse:s}".format(s = self)
@@ -151,6 +153,9 @@ o a ingresar el inventario inicial. \
     def save(self, *args, **kwargs):
         self.level = self.stock.level
         super(StockEvent, self).save(*args, **kwargs)
+
+    def reference(self):
+        return "{:05d}".format(self.id)
 
     def __unicode__(self):
         return "Cambio en el {se.stock:s} por {se.level}".format(se = self)

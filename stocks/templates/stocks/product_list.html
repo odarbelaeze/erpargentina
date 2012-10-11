@@ -33,8 +33,7 @@
         <td> {{ product.reference }} </td>
         <td> <a href="{% url product-detail product.id %}"> {{ product.name }} </a> </td>
         <td> <span class="pull-right"> {{ product.price|floatformat:2 }} </span> </td>
-        <td> 
-            <a href="{% url product-detail product.id %}"> <i class="icon-chevron-right pull-right"></i> </a>
+        <td>
             <span class="pull-right"> {{ product.stock_level }} </span> 
         </td>
     </tr>
@@ -51,4 +50,3 @@
     </div>
     {% endif %}
 {% endblock table_empty %}
-

@@ -1,8 +1,4 @@
-{% extends "base.html" %}
-
-<!-- Le title -->
-
-{% block title %} Inventario {% endblock %}
+{% extends "stocks/base_list.html" %}
 
 <!-- Le navigation bar -->
 
@@ -16,41 +12,33 @@
 </ul>
 {% endblock navbar %}
 
-<!-- Le content -->
+<!-- Le table_items -->
 
-{% block content %}
-
-<table class="table table-bordered table-striped table-hover" id="products-container">
-    <thead>
-        <tr>
-            <th class="span3"> Fecha </th>
-            <th class="span6"> Producto </th>
-            <th class="span3"> Precio </th>
-        </tr>
-    </thead>
-    <tbody>
+{% block table_items %}
+<thead>
+    <tr>
+        <th class="span3"> Fecha </th>
+        <th class="span6"> Producto </th>
+        <th class="span3"> Precio </th>
+    </tr>
+</thead>
+<tbody>
     {% for pricetag in pricetag_list %}
-        <tr>
-            <td> {{ pricetag.date|date:"D N d y (G:i)"|title }} </td>
-            <td> <a href="{% url pricetag-detail pricetag.id %}"> {{ pricetag.product }} </a> </td>
-            <td> {{ pricetag.price }} </td>
-        </tr>
-    {% empty %}
-        <div class="alert alert-info">
-            No hay productos para mostrar.
-        </div>
+    <tr>
+        <td> <a href="{% url pricetag-detail pricetag.id %}"> {{ pricetag.date|date:"D N d y (G:i)"|title }} </a> </td>
+        <td> <a href="{% url product-detail pricetag.product.id %}"> {{ pricetag.product }} </a> </td>
+        <td> <span class="pull-right"> {{ pricetag.price|floatformat:2 }} </span> </td>
+    </tr>
     {% endfor %}
-    </tbody>
-</table>
+</tbody>
+{% endblock table_items %}
 
-{% if is_paginated %}
-<div class="pagination pagination-centered">
-    <ul>
-    {% for p in paginator.page_range %}
-        <li> <a href="?page={{ p }}"> {{ p }} </a> </li>       
-    {% endfor %}
-    </ul>
-</div>
-{% endif %}
+<!-- Le error message -->
 
-{% endblock content %}
+{% block table_empty %}
+    {% if pricetag_list.empty %} 
+    <div class="alert alert-info">
+        No hay precios para mostrar.
+    </div>
+    {% endif %}
+{% endblock table_empty %}

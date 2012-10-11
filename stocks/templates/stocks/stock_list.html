@@ -1,8 +1,4 @@
-{% extends "base.html" %}
-
-<!-- Le title -->
-
-{% block title %} Inventario {% endblock %}
+{% extends "stocks/base_list.html" %}
 
 <!-- Le navigation bar -->
 
@@ -16,41 +12,35 @@
 </ul>
 {% endblock navbar %}
 
-<!-- Le content -->
+<!-- Le table_items -->
 
-{% block content %}
-
-<table class="table table-bordered table-striped table-hover" id="products-container">
-    <thead>
-        <tr>
-            <th class="span4"> Bodega </th>
-            <th class="span5"> Producto </th>
-            <th class="span3"> Cantidad </th>
-        </tr>
-    </thead>
-    <tbody>
+{% block table_items %}
+<thead>
+    <tr>
+        <th class="span2"> Referencia </th>
+        <th class="span4"> Bodega </th>
+        <th class="span4"> Producto </th>
+        <th class="span2"> Cantidad </th>
+    </tr>
+</thead>
+<tbody>
     {% for stock in stock_list %}
-        <tr>
-            <td> <a href="{% url warehouse-detail stock.warehouse.id %}"> {{ stock.warehouse }} </a> </td>
-            <td> <a href="{% url stock-detail stock.id %}"> {{ stock.product }} </a> </td>
-            <td> {{ stock.level }} </td>
-        </tr>
-    {% empty %}
-        <div class="alert alert-info">
-            No hay productos para mostrar.
-        </div>
+    <tr>
+        <td> <a href="{% url stock-detail stock.id %}"> {{ stock.reference }} </a> </td>
+        <td> <a href="{% url warehouse-detail stock.warehouse.id %}"> {{ stock.warehouse }} </a> </td>
+        <td> <a href="{% url stock-detail stock.id %}"> {{ stock.product }} </a> </td>
+        <td> <span class="pull-right"> {{ stock.level }} </span> </td>
+    </tr>
     {% endfor %}
-    </tbody>
-</table>
+</tbody>
+{% endblock table_items %}
 
-{% if is_paginated %}
-<div class="pagination pagination-centered">
-    <ul>
-    {% for p in paginator.page_range %}
-        <li> <a href="?page={{ p }}"> {{ p }} </a> </li>       
-    {% endfor %}
-    </ul>
-</div>
-{% endif %}
+<!-- Le error message -->
 
-{% endblock content %}
+{% block table_empty %}
+    {% if stock_list.empty %} 
+    <div class="alert alert-info">
+        No hay existencias para mostrar.
+    </div>
+    {% endif %}
+{% endblock table_empty %}

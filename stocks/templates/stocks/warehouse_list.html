@@ -26,8 +26,7 @@
         <tr>
             <td> <a href="{% url warehouse-detail warehouse.id %}"> {{ warehouse.name }} </a> </td>
             <td> 
-                {{ warehouse.address }} 
-                <a href="{% url warehouse-detail warehouse.id %}"> <i class="icon-chevron-right pull-right"></i> </a>
+                {{ warehouse.address }}
             </td>
         </tr>
     {% endfor %}

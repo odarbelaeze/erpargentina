@@ -11,8 +11,8 @@ urlpatterns = patterns('',
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', Home.as_view()),
-    url(r'^login/$', 'django.contrib.auth.views.login'),
-    url(r'^logout/$', 'django.contrib.auth.views.logout'),
+    url(r'^login/$', 'django.contrib.auth.views.login', name = "login"),
+    url(r'^logout/$', 'django.contrib.auth.views.logout', name = "logout"),
 )
 
 urlpatterns += patterns('',
