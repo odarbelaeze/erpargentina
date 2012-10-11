@@ -6,7 +6,7 @@
 <html>
 <head>
     <meta charset = "utf-8" />
-    <title>ERP | {% block title %} Página principal {% endblock %}</title>
+    <title>ERP | {% block title %} Página principal {% endblock title %}</title>
     <meta name="viewport" content="width = device-width, initial-scale = 1.0">
     <meta name="description" content="ERP Privado, localizado para Argentina.">
     <meta name="author" content="Oscar David Arbeláez E.">
@@ -56,13 +56,13 @@
                         <ul class="nav pull-right">
                             <li class="divider-vertical"></li>
                             <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"> {{ user.username }} <b class="caret"></b></a>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"> {% firstof user.get_full_name user.username %} <b class="caret"></b></a>
                             <ul class="dropdown-menu">
-                              <li><a href="#">Action</a></li>
-                              <li><a href="#">Another action</a></li>
-                              <li><a href="#">Something else here</a></li>
-                              <li class="divider"></li>
-                              <li><a href="{% url 'logout' %}?next=/"> Cerrar sesión </a></li>
+                                {% if user.is_staff %}
+                                <li><a href="/admin/">Administración</a></li>
+                                <li class="divider"></li>
+                                {% endif %}
+                                <li><a href="{% url 'logout' %}?next=/"> Cerrar sesión </a></li>
                             </ul>
                           </li>
                         </ul>

@@ -1,0 +1,30 @@
+{% extends "stocks/base_detail.html" %}
+
+{% block name %}
+    {{ warehouse }} <small>dirección: {{ warehouse.address }}</small>
+{% endblock name %}
+
+{% block navbar %}
+    <a href="{% url warehouse-list %}"> <i class="icon-chevron-left"></i> Lista de bodegas </a>
+    <ul class="nav nav-pills pull-right">
+        <li> <a href="{% url admin:stocks_warehouse_change warehouse.id %}"> Modificar información </a> </li>
+    </ul>
+{% endblock navbar %}
+
+{% block detail %}
+
+    <p class="lead">
+        {{ warehouse.more_info }}
+    </p>
+
+    <h2>Esistencias</h2>
+    <table class="table table-bordered table-hover">
+    {% for stock in warehouse.stock_set.all %}
+        <tr><td>
+        <a href="{% url stock-detail stock.id %}"><span class="badge"> {{ stock.level }}</span></a> unidades disponibles de 
+            <a href="{% url product-detail stock.product.id %}">{{ stock.product }}</a>. 
+        </td></tr>
+    {% endfor %}
+    </table>
+
+{% endblock detail %}

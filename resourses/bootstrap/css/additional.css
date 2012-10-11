@@ -62,3 +62,14 @@ body {
   padding-bottom: 220px;
   background: #FFFAF5;
 }
+
+/* Better icons
+-------------------------------------------------*/
+
+.icon-chevron-left {
+  float: left;
+  opacity: 0.25;
+  margin-right: 2px;
+  margin-left: 2px;
+  margin-top: 2px;
+}

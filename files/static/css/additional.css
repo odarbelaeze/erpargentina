@@ -62,3 +62,10 @@ body {
   padding-bottom: 220px;
   background: #FFFAF5;
 }
+
+/* Better icons
+-------------------------------------------------*/
+
+.icon-white {
+  opacity: 0.4;
+}

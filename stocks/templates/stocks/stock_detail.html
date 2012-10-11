@@ -1,0 +1,28 @@
+{% extends "stocks/base_detail.html" %}
+
+{% block name %}
+    {{ stock }} <small>disponibles: {{ stock.level }}</small>
+{% endblock name %}
+
+{% block navbar %}
+    <a href="{% url stock-list %}"> <i class="icon-chevron-left"></i> Lista de existencias </a>
+{% endblock navbar %}
+
+{% block detail %}
+
+    <p class="lead">
+        Relaciona la existencia del producto <a href="{% url product-detail stock.product.id %}"> {{ stock.product }} </a>
+        en la bodega <a href="{% url warehouse-detail stock.warehouse.id %}"> {{ stock.warehouse }} </a>.
+    </p>
+
+    <h2>Eventos en este inventario</h2>
+
+    <table class="table table-bordered table-hover">
+    {% for stevnt in stock.stockevent_set.all %}
+        <tr><td>
+        <span class="badge {% if forloop.first %}badge-success{% endif %}">{{ stevnt.level }}</span> el día {{ stevnt.date }}
+        <a href="{% url stockevent-detail stevnt.id %}"><span class="badge badge-info"> {{ stevnt.reason|truncatewords:4 }} </span></a>
+        </td></tr>
+    {% endfor %}
+    </table>
+{% endblock detail %}
