@@ -14,7 +14,7 @@ class PriceInline(admin.TabularInline):
 class StockEventInline(admin.TabularInline):
     """docstring for StockInline"""
     model = StockEvent
-    extra = 1
+    extra = 0
 
 class StockInline(admin.TabularInline):
     """docstring for StockInline"""

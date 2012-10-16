@@ -1,0 +1,46 @@
+{% extends "clients/base_list.html" %}
+
+<!-- Le navigation bar -->
+
+{% block navbar %}
+<ul class="nav nav-pills pull-right">
+    <li class="active"> <a href="{% url route-list %}"> Rutas </a> </li>
+    <li> <a href="{% url client-list %}"> Clientes </a> </li>
+</ul>
+{% endblock navbar %}
+
+<!-- Le table_items -->
+
+{% block table_items %}
+<thead>
+    <tr>
+        <th class="span6"> Nombre </th>
+        <th class="span6"> Encargado </th>
+    </tr>
+</thead>
+<tbody>
+{% for route in route_list %} 
+    <tr>
+        <td> <a href="{% url route-detail route.id %}"> {{ route.name }} </a> </td>
+        <td> <a href="#"> {{ route.in_charge }} </a> </td>
+    </tr>
+{% endfor %}
+</tbody>
+
+{% if perms.clients.add_route and user.is_staff %}
+<a class="btn btn-primary" href="{% url admin:clients_route_add %}">
+    Añadir ruta
+</a>  
+{% endif %}
+
+{% endblock table_items %}
+
+<!-- Le error message -->
+
+{% block table_empty %}
+    {% if route_list.empty %} 
+    <div class="alert alert-info">
+        No hay rutas para mostrar.
+    </div>
+    {% endif %}
+{% endblock table_empty %}

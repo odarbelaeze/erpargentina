@@ -3,13 +3,12 @@ from django.db import models
 from django.core.validators import RegexValidator
 from django.core.exceptions import ObjectDoesNotExist
 
-
 class WareHouse(models.Model):
     """docstring for WareHouse"""
     name = models.CharField(max_length = 255, unique = True)
     address = models.CharField(max_length = 255, unique = True)
     more_info = models.TextField(blank = True)
-    
+     
     name.verbose_name = "Nombre"
     address.verbose_name = "Dirección"
     more_info.verbose_name = "Mas información"
@@ -55,7 +54,7 @@ class Product(models.Model):
     stock_level.short_description = "Total unidades disponibles"
 
     def reference(self):
-        return "{:05d}".format(self.id)
+        return u"{:05d}".format(self.id)
 
     reference.short_description = "Referencia"
 
@@ -89,7 +88,7 @@ class PriceTag(models.Model):
         verbose_name_plural = "Precios"
 
     def __unicode__(self):
-        return "Precio de {.product:s}".format(self)
+        return u"Precio de {.product:s}".format(self)
 
 class Stock(models.Model):
     """docstring for Stock"""
@@ -118,10 +117,10 @@ class Stock(models.Model):
         StockEvent(stock = self).save()
 
     def reference(self):
-        return "{:05d}".format(self.id)
+        return u"{:05d}".format(self.id)
 
     def __unicode__(self):
-        return "Existencia de {s.product:s} en {s.warehouse:s}".format(s = self)
+        return u"Existencia de {s.product:s} en {s.warehouse:s}".format(s = self)
 
 class StockEvent(models.Model):
     """docstring for StockEvent"""
@@ -158,4 +157,4 @@ o a ingresar el inventario inicial. \
         return "{:05d}".format(self.id)
 
     def __unicode__(self):
-        return "Cambio en el {se.stock:s} por {se.level}".format(se = self)
+        return u"Cambio en el {se.stock:s} por {se.level}".format(se = self)

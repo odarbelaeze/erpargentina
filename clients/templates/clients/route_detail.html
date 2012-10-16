@@ -1,0 +1,31 @@
+{% extends "clients/base_detail.html" %}
+
+{% block name %}
+    {{ route.name }}
+{% endblock name %}
+
+{% block navbar %}
+    <a href="{% url route-list %}"> <i class="icon-chevron-left"></i> Lista de rutas </a>
+    {% if user.is_staff %}
+    <ul class="nav nav-pills pull-right">
+        <li> <a href="{% url admin:clients_route_change route.id %}"> Modificar información </a> </li>
+    </ul>
+    {% endif %}
+{% endblock navbar %}
+
+{% block detail %}
+    {% if route.description %}
+    <p class="lead"> {{ route.description }} </p>
+    {% else %}
+    <div class="alert alert-info"> La descripción del routeo "{{ route.name|lower }}" no está disponible. </div>
+    {% endif %}
+
+    <h2>Clientes:</h2>
+    <table class="table table-bordered table-hover">
+    {% for client in route.client_set.all %}
+        <tr><td>
+            <a href="{% url client-detail client.id %}">{{ client.full_name }}</a>. 
+        </td></tr>
+    {% endfor %}
+    </table>
+{% endblock detail %}

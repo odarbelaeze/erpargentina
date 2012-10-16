@@ -7,9 +7,11 @@
 
 {% block navbar %}
     <a href="{% url product-list %}"> <i class="icon-chevron-left"></i> Lista de productos </a>
+    {% if user.is_staff %}
     <ul class="nav nav-pills pull-right">
         <li> <a href="{% url admin:stocks_product_change product.id %}"> Modificar información </a> </li>
     </ul>
+    {% endif %}
 {% endblock navbar %}
 
 {% block detail %}
@@ -24,7 +26,7 @@
     <table class="table table-bordered table-hover">
     {% for stock in product.stock_set.all %}
         <tr><td>
-        <a href="{% url stock-detail stock.id %}"><span class="badge"> {{ stock.level }}</span></a> unidades disponibles en la bodega 
+        <span class="badge"> {{ stock.level }}</span> unidades disponibles en la bodega 
             <a href="{% url warehouse-detail stock.warehouse.id %}">{{ stock.warehouse }}</a>. 
         </td></tr>
     {% endfor %}

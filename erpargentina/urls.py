@@ -18,3 +18,7 @@ urlpatterns = patterns('',
 urlpatterns += patterns('',
     url(r'^inventario/', include('stocks.urls')),
 )
+
+urlpatterns += patterns('',
+    url(r'^clientes/', include('clients.urls')),
+)

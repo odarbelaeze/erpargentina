@@ -6,9 +6,6 @@
 <ul class="nav nav-pills pull-right">
     <li> <a href="{% url warehouse-list %}"> Bodegas </a> </li>
     <li class="active"> <a href="{% url product-list %}"> Productos </a> </li>
-    <li> <a href="{% url pricetag-list %}"> Precios </a> </li>
-    <li> <a href="{% url stock-list %}"> Existencias </a> </li>
-    <li> <a href="{% url stockevent-list %}"> Registro de existencias </a> </li>
 </ul>
 {% endblock navbar %}
 
@@ -39,6 +36,13 @@
     </tr>
 {% endfor %}
 </tbody>
+
+{% if perms.stocks.add_product and user.is_staff %}
+<a class="btn btn-primary" href="{% url admin:stocks_product_add %}">
+    Añadir producto
+</a>  
+{% endif %}
+
 {% endblock table_items %}
 
 <!-- Le error message -->
