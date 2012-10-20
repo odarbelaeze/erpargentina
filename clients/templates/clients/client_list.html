@@ -1,11 +1,11 @@
-{% extends "stocks/base_list.html" %}
+{% extends "clients/base_list.html" %}
 
 <!-- Le navigation bar -->
 
 {% block navbar %}
 <ul class="nav nav-pills pull-right">
-    <li class="active"> <a href="{% url warehouse-list %}"> Bodegas </a> </li>
-    <li> <a href="{% url product-list %}"> Productos </a> </li>
+    <li> <a href="{% url route-list %}"> Rutas </a> </li>
+    <li class="active"> <a href="{% url client-list %}"> Clientes </a> </li>
 </ul>
 {% endblock navbar %}
 
@@ -14,25 +14,27 @@
 {% block table_items %}  
 <thead>
     <tr>
-        <th class="span6"> Nombre </th>
-        <th class="span6"> Dirección </th>
+        <th class="span4"> Nombre </th>
+        <th class="span4"> Dirección </th>
+        <th class="span2"> Teléfono </th>
+        <th class="span2"> Saldo </th>
     </tr>
 </thead>
 <tbody>
-    {% for warehouse in warehouse_list %}
+    {% for client in client_list %}
         <tr>
-            <td> <a href="{% url warehouse-detail warehouse.id %}"> {{ warehouse.name }} </a> </td>
-            <td> 
-                {{ warehouse.address }}
-            </td>
+            <td> <a href="{% url client-detail client.id %}"> {{ client.full_name }} </a> </td>
+            <td> {{ client.address }} </td>
+            <td> {{ client.phone_number }} </td>
+            <td> {{ client.total_debt }} </td>
         </tr>
     {% endfor %}
 </tbody>
 
-{% if perms.stocks.add_warehouse and user.is_staff %}
-<a class="btn btn-primary" href="{% url admin:stocks_warehouse_add %}">
-    Añadir bodega
-</a>  
+{% if perms.stocks.add_client and user.is_staff %}
+<a class="btn btn-primary" href="{% url admin:clients_client_add %}">
+    Añadir cliente
+</a>
 {% endif %}
 
 {% endblock table_items %}
@@ -40,9 +42,9 @@
 <!-- Le error message -->
 
 {% block table_empty %}
-    {% if warehouse_list.empty %} 
+    {% if client_list.empty %} 
     <div class="alert alert-info">
-        No hay bodegas para mostrar.
+        No hay clientes para mostrar.
     </div>
     {% endif %}
 {% endblock table_empty %}

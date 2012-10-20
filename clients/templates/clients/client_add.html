@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+		
+{% block content %}
+	<form method="post" action="">
+		{{ client_form }}
+		{{ charge_formset.management_form }}
+	    <table>
+	        {% for form in charge_formset %}
+	        {{ form }}
+	        {% endfor %}
+	    </table>
+	    {{ payment_formset.management_form }}
+	    <table>
+	        {% for form in payment_formset %}
+	        {{ form }}
+	        {% endfor %}
+	        {{ payment_formset.ADD }}
+	    </table>
+	</form>
+{% endblock content %}

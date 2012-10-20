@@ -1,14 +1,14 @@
-{% extends "stocks/base_detail.html" %}
+{% extends "clients/base_detail.html" %}
 
 {% block name %}
-    {{ warehouse }} <small>dirección: {{ warehouse.address }}</small>
+    {{ client }} <small>saldo: {{ client.total_debt }}</small>
 {% endblock name %}
 
 {% block navbar %}
-    <a href="{% url warehouse-list %}"> <i class="icon-chevron-left"></i> Lista de bodegas </a>
+    <a href="{% url client-list %}"> <i class="icon-chevron-left"></i> Lista de clientes </a>
     {% if user.is_staff %}
     <ul class="nav nav-pills pull-right">
-        <li> <a href="{% url admin:stocks_warehouse_change warehouse.id %}"> Modificar información </a> </li>
+        <li> <a href="{% url admin:clients_client_change client.id %}"> Modificar información </a> </li>
     </ul>
     {% endif %}
 {% endblock navbar %}
@@ -16,17 +16,55 @@
 {% block detail %}
 
     <p class="lead">
-        {{ warehouse.more_info }}
+        {{ client.more_info }}
     </p>
 
-    <h2>Esistencias</h2>
+    <h2>Compras</h2>
     <table class="table table-bordered table-hover">
-    {% for stock in warehouse.stock_set.all %}
-        <tr><td>
-        <span class="badge"> {{ stock.level }}</span> unidades disponibles de 
-            <a href="{% url product-detail stock.product.id %}">{{ stock.product }}</a>. 
-        </td></tr>
-    {% endfor %}
+        <thead>
+            <th class="span2">Cantidad</th>
+            <th class="span6">Producto</th>
+            <th class="span2">Precio Unid.</th>
+            <th class="span2">Subtotal</th>
+        </thead>
+        <tbody>
+        {% for charge in client.charge_set.all %}
+            <tr>
+                <td>{{ charge.quantity }}</td>
+                <td>{{ charge.product }}</td>
+                <td><span class="pull-right">{{ charge.price|floatformat:2 }}</span></td>
+                <td><span class="pull-right">{{ charge.total_partial|floatformat:2 }}</span></td>
+            </tr>
+        {% endfor %}
+            <tr class="info">
+                <th colspan=3>Total compras</th>
+                <th><span class="pull-right">{{ client.total_charges|floatformat:2 }}</span></th>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Abonos</h2>
+    <table class="table table-bordered table-hover">
+        <thead>
+            <th class="span2">Tipo</th>
+            <th class="span2">Fecha</th>
+            <th class="span6">Cobrador</th>
+            <th class="span2">Monto</th>
+        </thead>
+        <tbody>
+        {% for payment in client.payment_set.all %}
+            <tr>
+                <td>{{ payment.get_p_type_display }}</td>
+                <td>{{ payment.date|date|title }}</td>
+                <td>{{ payment.collector }}</td>
+                <td><span class="pull-right">{{ payment.amount|floatformat:2 }}</span></td>
+            </tr>
+        {% endfor %}
+            <tr class="info">
+                <th colspan=3>Total abonos</th>
+                <th><span class="pull-right">{{ client.total_payments|floatformat:2 }}</span></th>
+            </tr>
+        </tbody>
     </table>
 
 {% endblock detail %}
