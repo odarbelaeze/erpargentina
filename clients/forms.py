@@ -60,8 +60,7 @@ class ClientInfo(forms.Form):
 class ChargeAddForm(forms.Form):
     error_css_class = "error"
     date = forms.DateTimeField(
-        widget = forms.DateTimeInput(attrs={'class': 'span2', 'placeholder': u'Fecha'}),
-        initial = timezone.now()
+        widget = forms.DateTimeInput(attrs={'class': 'span2', 'placeholder': u'Fecha'})
     )
     vendor = forms.ModelChoiceField(
         Worker.objects,
@@ -81,8 +80,7 @@ class ChargeAddForm(forms.Form):
 class PaymentAddForm(forms.Form):
     error_css_class = "error"
     date = forms.DateTimeField(
-        widget = forms.DateTimeInput(attrs={'class': 'span2', 'placeholder': u'Fecha'}),
-        initial = timezone.now()
+        widget = forms.DateTimeInput(attrs={'class': 'span2', 'placeholder': u'Fecha'})
     )
     p_type = forms.ChoiceField(
         choices = PTYPE_CHOICES,
@@ -93,7 +91,7 @@ class PaymentAddForm(forms.Form):
         widget = forms.Select(attrs={'class': 'span3', 'placeholder': u'Cobrador'})
     )
     amount = forms.IntegerField(
-        widget = forms.TextInput(attrs={'class': 'span2', 'placeholder': u'Precio'})
+        widget = forms.TextInput(attrs={'class': 'span2', 'placeholder': u'Monto'})
     )
 
 class AddChargeForm(forms.Form):

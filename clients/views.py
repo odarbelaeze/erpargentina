@@ -73,6 +73,25 @@ def new_client(request, pk = 1):
 
     if request.method == 'POST':
         print "I'll do something cool."
+        client_form = ClientInfo(request.POST, prefix = 'client')
+        charge_formset = ChargeFormSet(request.POST, prefix = 'charges')
+        payment_formset = PaymentFormSet(request.POST, prefix = 'payments')
+
+        if (client_form.is_valid() and
+         any([form.is_valid() for form in charge_formset]) and
+         any([form.is_valid() for form in payment_formset])):
+            print client_form.cleaned_data
+            print charge_formset.cleaned_data
+            print payment_formset.cleaned_data
+        else:
+            context = {
+                'client_form': client_form,
+                'charge_formset': charge_formset,
+                'payment_formset': payment_formset,
+                'route_id': pk,
+            }
+            return render(request, 'clients/client_add.html', context)
+
         return redirect('route-detail', pk = pk, permanent = False)
     else:
         client_form = ClientInfo(prefix = 'client')
@@ -82,6 +101,7 @@ def new_client(request, pk = 1):
             'client_form': client_form,
             'charge_formset': charge_formset,
             'payment_formset': payment_formset,
+            'route_id': pk,
         }
         return render(request, 'clients/client_add.html', context)
 

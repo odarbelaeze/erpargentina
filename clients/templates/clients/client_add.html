@@ -1,8 +1,16 @@
 {% extends "base.html" %}
         
 {% block content %}
-<form method="post" action="{% url route-client-add  %}">
+<form method="post" action="{% url route-client-add route_id %}">
+    {% csrf_token %}
+
     <legend>Información del cliente</legend>
+    {% if client_form.errors %}
+        <div class="alert alert-error">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <h4>Se presentaron errores!</h4>
+        </div>
+    {% endif %}
     <div class="controls">
         {{ client_form.full_name }}
     </div>
@@ -17,7 +25,16 @@
         {{ client_form.phone }}
         {{ client_form.alter_phone }}
     </div>
+
     <legend>Recargos</legend>
+    {% if charge_formset.errors %}
+        <div class="alert alert-error">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <h4>Se presentaron errores!</h4>
+            {{ charge_formset.errors }}
+        </div>
+    {% endif %}
+    {{ charge_formset.management_form }}
     {% for form in charge_formset %}
     <div class="controls controls-row">
         {{ form.date }}
@@ -27,7 +44,16 @@
         {{ form.price }}
     </div>
     {% endfor %}
+
     <legend>Abonos</legend>
+    {% if payment_formset.errors %}
+        <div class="alert alert-error">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <h4>Se presentaron errores!</h4>
+            {{ payment_formset.errors }}
+        </div>
+    {% endif %}
+    {{ payment_formset.management_form }}
     {% for form in payment_formset %}
     <div class="controls controls-row">
         {{ form.date }}
@@ -36,5 +62,9 @@
         {{ form.amount }}
     </div>
     {% endfor %}
+
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Guardar</button>
+    </div>
 </form>
 {% endblock content %}
