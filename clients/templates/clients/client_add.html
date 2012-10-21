@@ -1,20 +1,40 @@
 {% extends "base.html" %}
-		
+        
 {% block content %}
-	<form method="post" action="">
-		{{ client_form }}
-		{{ charge_formset.management_form }}
-	    <table>
-	        {% for form in charge_formset %}
-	        {{ form }}
-	        {% endfor %}
-	    </table>
-	    {{ payment_formset.management_form }}
-	    <table>
-	        {% for form in payment_formset %}
-	        {{ form }}
-	        {% endfor %}
-	        {{ payment_formset.ADD }}
-	    </table>
-	</form>
+<form method="post" action="{% url route-client-add  %}">
+    <legend>Información del cliente</legend>
+    <div class="controls">
+        {{ client_form.full_name }}
+    </div>
+    <div class="controls controls-row">
+        {{ client_form.identification }}
+        {{ client_form.address }}
+    </div>
+    <div class="controls">
+        {{ client_form.indication }}
+    </div>
+    <div class="controls controls-row">
+        {{ client_form.phone }}
+        {{ client_form.alter_phone }}
+    </div>
+    <legend>Recargos</legend>
+    {% for form in charge_formset %}
+    <div class="controls controls-row">
+        {{ form.date }}
+        {{ form.vendor }}
+        {{ form.quantity }}
+        {{ form.product }}
+        {{ form.price }}
+    </div>
+    {% endfor %}
+    <legend>Abonos</legend>
+    {% for form in payment_formset %}
+    <div class="controls controls-row">
+        {{ form.date }}
+        {{ form.p_type }}
+        {{ form.collector }}
+        {{ form.amount }}
+    </div>
+    {% endfor %}
+</form>
 {% endblock content %}

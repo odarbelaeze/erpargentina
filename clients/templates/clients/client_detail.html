@@ -43,6 +43,22 @@
         </tbody>
     </table>
 
+    <form class="form-horizontal" method="post" action="{% url client-charge-add client.id %}">
+        {% csrf_token %}
+        <legend>Nueva compra</legend>
+        {% for field in form_charge %}
+            {% include "field_snipet.html" %}
+        {% endfor %}
+        <div class="control-group">
+            <div class="controls">
+                <button type="submit" class="btn" action="{% url client-charge-add client.id %}">
+                    Comprar!
+                </button> 
+            </div>
+        </div>
+    </form>
+
+
     <h2>Abonos</h2>
     <table class="table table-bordered table-hover">
         <thead>
@@ -66,5 +82,20 @@
             </tr>
         </tbody>
     </table>
+
+    <form class="form-horizontal" method="post" action="{% url client-payment-add client.id %}">
+        {% csrf_token %}
+        <legend>Nuevo abono</legend>
+        {% for field in form_payment %}
+            {% include "field_snipet.html" %}
+        {% endfor %}
+        <div class="control-group">
+            <div class="controls">
+                <button type="submit" class="btn" action="{% url client-payment-add client.id %}">
+                    Abonar!
+                </button> 
+            </div>
+        </div>
+    </form>
 
 {% endblock detail %}

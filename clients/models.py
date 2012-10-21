@@ -28,7 +28,7 @@ class Client(models.Model):
     order = models.PositiveIntegerField(default = 0, blank = True, editable = False)
     full_name = models.CharField(max_length = 100)
     identification = models.CharField(max_length = 100, blank = True)
-    addres = models.CharField(max_length = 200)
+    address = models.CharField(max_length = 200)
     indication = models.TextField(blank = True)
     phone_number = models.CharField(max_length = 100)
     alter_phone_number = models.CharField(max_length = 100, blank = True)
@@ -37,7 +37,7 @@ class Client(models.Model):
     order.verbose_name = u'Posición'
     full_name.verbose_name = u'Nombre completo'
     identification.verbose_name = u'Identificación'
-    addres.verbose_name = u'Dirección'
+    address.verbose_name = u'Dirección'
     indication.verbose_name = u'Indicación'
     phone_number.verbose_name = u'Número de teléfono'
     alter_phone_number.verbose_name = u'Tléfono alternativo'
@@ -114,12 +114,14 @@ class Client(models.Model):
         return self.full_name
     
 class Charge(models.Model):
+    date = models.DateTimeField()
     client = models.ForeignKey(Client)
     vendor = models.ForeignKey(Worker)
     quantity = models.PositiveIntegerField()
     product = models.ForeignKey(Product)
     price = models.PositiveIntegerField()
 
+    date.verbose_name = u'Fecha'
     client.verbose_name = u'Cliente'
     vendor.verbose_name = u'Vendedor'
     quantity.verbose_name = u'Cantidad'
@@ -170,13 +172,12 @@ class Charge(models.Model):
     def __unicode__(self):
         return u"{s.quantity} de {s.product}".format(s = self)
 
+PTYPE_CHOICES = (
+    ('initial', 'Cuota inicial'),
+    ('payment', 'Abono'),
+)
 
 class Payment(models.Model):
-    
-    PTYPE_CHOICES = (
-        ('initial', 'Cuota inicial'),
-        ('payment', 'Abono'),
-    )
 
     client = models.ForeignKey(Client)
     date = models.DateTimeField()
@@ -202,10 +203,10 @@ class Payment(models.Model):
     def save(self, *args, **kwargs):
         if self.amount > self.client.total_debt(): return
         if not self.id and self.p_type == 'payment':
-            # Reduce stocks
-            # Generate earnings
             earn = self.amount * self.collector.payment_earn_rate / 100.0
+            print "Comision generada ", earn
             self.collector.earning_set.add(Earning(amount = earn))
+            self.collector.save()
             print "Savig payment for the very first time."
 
         super(Payment, self).save(*args, **kwargs)

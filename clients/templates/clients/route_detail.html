@@ -8,6 +8,7 @@
     <a href="{% url route-list %}"> <i class="icon-chevron-left"></i> Lista de rutas </a>
     {% if user.is_staff %}
     <ul class="nav nav-pills pull-right">
+        <li> <a href="{% url route-client-add route.id %}"> Nuevo cliente </a> </li>
         <li> <a href="{% url admin:clients_route_change route.id %}"> Modificar información </a> </li>
     </ul>
     {% endif %}
