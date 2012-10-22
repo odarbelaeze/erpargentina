@@ -81,8 +81,12 @@ def new_client(request, pk = 1):
          any([form.is_valid() for form in charge_formset]) and
          any([form.is_valid() for form in payment_formset])):
             print client_form.cleaned_data
-            print charge_formset.cleaned_data
-            print payment_formset.cleaned_data
+            for form in charge_formset:
+                if form.is_valid():
+                    print form.cleaned_data
+            for form in payment_formset:
+                if form.is_valid():
+                    print form.cleaned_data
         else:
             context = {
                 'client_form': client_form,

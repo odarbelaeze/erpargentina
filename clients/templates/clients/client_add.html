@@ -45,6 +45,16 @@
     </div>
     {% endfor %}
 
+    <div class="alert alert-info">
+        <div class="controls controls-row">
+            {{ charge_formset.empty_form.date }}
+            {{ charge_formset.empty_form.vendor }}
+            {{ charge_formset.empty_form.quantity }}
+            {{ charge_formset.empty_form.product }}
+            {{ charge_formset.empty_form.price }}
+        </div>
+    </div>
+
     <legend>Abonos</legend>
     {% if payment_formset.errors %}
         <div class="alert alert-error">
