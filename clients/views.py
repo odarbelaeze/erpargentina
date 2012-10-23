@@ -68,6 +68,7 @@ class ClientDetail(LoginRequiredMixin, DetailView):
 
 def new_client(request, pk = 1):
 
+    route = get_object_or_404(Route, pk = pk)
     ChargeFormSet = formset_factory(ChargeAddForm, extra = 3)
     PaymentFormSet = formset_factory(PaymentAddForm, extra = 10)
 
@@ -80,13 +81,52 @@ def new_client(request, pk = 1):
         if (client_form.is_valid() and
          any([form.is_valid() for form in charge_formset]) and
          any([form.is_valid() for form in payment_formset])):
-            print client_form.cleaned_data
+            
+            # Create the client
+
+            data = client_form.cleaned_data
+            clt = Client(
+                route = route,
+                full_name = data['full_name'],
+                identification = data['identification'],
+                address = data['address'],
+                indication = data['indication'],
+                phone_number = data['phone'],
+                alter_phone_number = data['alter_phone']
+            )
+            clt.save()
+
+            # Add the charges
+
             for form in charge_formset:
                 if form.is_valid():
-                    print form.cleaned_data
+                    data = form.cleaned_data
+                    clt.charge_set.add(Charge(
+                        date = data['date'],
+                        vendor = data['vendor'],
+                        quantity = data['quantity'],
+                        product = data['product'],
+                        price = data['price']
+                    ))
+
+            # Add payments
+
             for form in payment_formset:
                 if form.is_valid():
-                    print form.cleaned_data
+                    data = form.cleaned_data
+                    clt.payment_set.add(Payment(
+                        date = data['date'],
+                        collector = data['collector'],
+                        p_type = data['p_type'],
+                        amount = data['amount']
+                    ))
+
+            # Save the new data
+
+            clt.save()
+
+            return redirect('client-detail', pk = clt.id)
+
         else:
             context = {
                 'client_form': client_form,
@@ -99,7 +139,9 @@ def new_client(request, pk = 1):
         return redirect('route-detail', pk = pk, permanent = False)
     else:
         client_form = ClientInfo(prefix = 'client')
-        charge_formset = ChargeFormSet(prefix = 'charges')
+        charge_formset = ChargeFormSet(prefix = 'charges', initial = [{
+                    'date': timezone.now(),
+                    }])
         payment_formset = PaymentFormSet(prefix = 'payments')
         context = {
             'client_form': client_form,

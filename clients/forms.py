@@ -2,6 +2,7 @@
 from django import forms
 
 from django.utils import timezone
+from django.core.validators import MinValueValidator
 
 from stocks.models import Product
 
@@ -75,7 +76,8 @@ class ChargeAddForm(forms.Form):
         widget = forms.Select(attrs={'class': 'span3', 'placeholder': u'Vendedor'})
     )
     price = forms.IntegerField(
-        widget = forms.TextInput(attrs={'class': 'span1', 'placeholder': u'Precio'})
+        widget = forms.TextInput(attrs={'class': 'span1', 'placeholder': u'Precio'}),
+        validators = [MinValueValidator(1)]
     )
 
 class PaymentAddForm(forms.Form):
@@ -93,7 +95,8 @@ class PaymentAddForm(forms.Form):
         widget = forms.Select(attrs={'class': 'span3', 'placeholder': u'Cobrador'})
     )
     amount = forms.IntegerField(
-        widget = forms.TextInput(attrs={'class': 'span2', 'placeholder': u'Monto'})
+        widget = forms.TextInput(attrs={'class': 'span2', 'placeholder': u'Monto'}),
+        validators = [MinValueValidator(1)]
     )
 
 class AddChargeForm(forms.Form):
@@ -102,7 +105,7 @@ class AddChargeForm(forms.Form):
     vendor = forms.ModelChoiceField(Worker.objects)
     quantity = forms.IntegerField()
     product = forms.ModelChoiceField(Product.objects)
-    price = forms.IntegerField()
+    price = forms.IntegerField(validators = [MinValueValidator(1)])
 
     date.label = u'Fecha'
     vendor.label = u'Vendedor'
@@ -115,7 +118,7 @@ class AddPaymentForm(forms.Form):
     date = forms.DateTimeField()
     p_type = forms.ChoiceField(choices = PTYPE_CHOICES)
     collector = forms.ModelChoiceField(Worker.objects)
-    amount = forms.IntegerField()
+    amount = forms.IntegerField(validators = [MinValueValidator(1)])
 
     p_type.label = u'Tipo'
     date.label = u'Fecha'

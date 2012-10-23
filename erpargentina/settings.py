@@ -16,11 +16,11 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': path.join(PROJECT_ROOT, pardir, 'database'),
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': '',
+        'ENGINE': 'django.db.backends.sqlite3.postgresql_psycopg2',
+        'NAME': 'openscience_erpargentina',
+        'USER': 'openscience',
+        'PASSWORD': 'elToby29',
+        'HOST': 'postgresql1.alwaysdata.com',
         'PORT': '',
     }
 }

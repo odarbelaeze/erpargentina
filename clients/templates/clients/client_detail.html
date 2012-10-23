@@ -5,7 +5,7 @@
 {% endblock name %}
 
 {% block navbar %}
-    <a href="{% url client-list %}"> <i class="icon-chevron-left"></i> Lista de clientes </a>
+    <a href="{% url route-detail client.route.id %}"> <i class="icon-chevron-left"></i> Volver a ruta </a>
     {% if user.is_staff %}
     <ul class="nav nav-pills pull-right">
         <li> <a href="{% url admin:clients_client_change client.id %}"> Modificar información </a> </li>
