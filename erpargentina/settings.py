@@ -4,6 +4,7 @@
 from os import path, pardir
 
 DEBUG = True
+
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -16,7 +17,7 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3.postgresql_psycopg2',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'openscience_erpargentina',
         'USER': 'openscience',
         'PASSWORD': 'elToby29',
@@ -42,11 +43,11 @@ USE_L10N = True
 # If you set this to False, Django will not use timezone-aware datetimes.
 USE_TZ = True
 
-MEDIA_ROOT = path.join(PROJECT_ROOT, pardir, 'files', 'media')
+MEDIA_ROOT = path.join(PROJECT_ROOT, pardir, 'public', 'site_media')
 
 MEDIA_URL = '/media/'
 
-STATIC_ROOT = path.join(PROJECT_ROOT, pardir, 'files', 'static')
+STATIC_ROOT = path.join(PROJECT_ROOT, pardir, 'public', 'static')
 
 STATIC_URL = '/static/'
 
