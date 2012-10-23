@@ -88,7 +88,7 @@ class PriceTag(models.Model):
         verbose_name_plural = "Precios"
 
     def __unicode__(self):
-        return u"Precio de {.product:s}".format(self)
+        return u"Precio de {0.product:s}".format(self)
 
 class Stock(models.Model):
     """docstring for Stock"""
