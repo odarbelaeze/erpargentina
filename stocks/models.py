@@ -54,7 +54,7 @@ class Product(models.Model):
     stock_level.short_description = "Total unidades disponibles"
 
     def reference(self):
-        return u"{:05d}".format(self.id)
+        return u"{0:05d}".format(self.id)
 
     reference.short_description = "Referencia"
 
@@ -88,7 +88,7 @@ class PriceTag(models.Model):
         verbose_name_plural = "Precios"
 
     def __unicode__(self):
-        return u"Precio de {.product:s}".format(self)
+        return u"Precio de {0.product:s}".format(self)
 
 class Stock(models.Model):
     """docstring for Stock"""
@@ -117,7 +117,7 @@ class Stock(models.Model):
         StockEvent(stock = self).save()
 
     def reference(self):
-        return u"{:05d}".format(self.id)
+        return u"{0:05d}".format(self.id)
 
     def __unicode__(self):
         return u"Existencia de {s.product:s} en {s.warehouse:s}".format(s = self)
@@ -154,7 +154,7 @@ o a ingresar el inventario inicial. \
         super(StockEvent, self).save(*args, **kwargs)
 
     def reference(self):
-        return "{:05d}".format(self.id)
+        return "{0:05d}".format(self.id)
 
     def __unicode__(self):
         return u"Cambio en el {se.stock:s} por {se.level}".format(se = self)
