@@ -69,7 +69,7 @@ class ClientDetail(LoginRequiredMixin, DetailView):
 def new_client(request, pk = 1):
 
     route = get_object_or_404(Route, pk = pk)
-    ChargeFormSet = formset_factory(ChargeAddForm, extra = 3)
+    ChargeFormSet = formset_factory(ChargeAddForm, extra = 1)
     PaymentFormSet = formset_factory(PaymentAddForm, extra = 10)
 
     if request.method == 'POST':
@@ -102,8 +102,8 @@ def new_client(request, pk = 1):
                 if form.is_valid():
                     data = form.cleaned_data
                     clt.charge_set.add(Charge(
-                        date = data['date'],
-                        vendor = data['vendor'],
+                        date = timezone.datetime(data['date'].year, data['date'].month, data['date'].day),
+                        vendor = route.in_charge,
                         quantity = data['quantity'],
                         product = data['product'],
                         price = data['price']
@@ -115,8 +115,8 @@ def new_client(request, pk = 1):
                 if form.is_valid():
                     data = form.cleaned_data
                     clt.payment_set.add(Payment(
-                        date = data['date'],
-                        collector = data['collector'],
+                        date = timezone.datetime(data['date'].year, data['date'].month, data['date'].day),
+                        collector = route.in_charge,
                         p_type = data['p_type'],
                         amount = data['amount']
                     ))
@@ -139,10 +139,15 @@ def new_client(request, pk = 1):
         return redirect('route-detail', pk = pk, permanent = False)
     else:
         client_form = ClientInfo(prefix = 'client')
-        charge_formset = ChargeFormSet(prefix = 'charges', initial = [{
-                    'date': timezone.now(),
-                    }])
-        payment_formset = PaymentFormSet(prefix = 'payments')
+        charge_formset = ChargeFormSet(
+            prefix = 'charges', initial = [{
+                'date': timezone.now(),
+            }])
+        payment_formset = PaymentFormSet(
+            prefix = 'payments', initial = [{
+                'date': timezone.now(),
+            }]
+        )
         context = {
             'client_form': client_form,
             'charge_formset': charge_formset,

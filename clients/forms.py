@@ -1,5 +1,6 @@
 # coding=utf-8
 from django import forms
+from django.forms import extras
 
 from django.utils import timezone
 from django.core.validators import MinValueValidator
@@ -45,7 +46,7 @@ class ClientInfo(forms.Form):
     )
     indication = forms.CharField(
         max_length = 100,
-        widget = forms.Textarea(attrs={'class': 'span10', 'placeholder': u'Indicación (opcional)'}),
+        widget = forms.TextInput(attrs={'class': 'span10', 'placeholder': u'Indicación (opcional)'}),
         required = False
     )
     phone = forms.CharField(
@@ -60,14 +61,13 @@ class ClientInfo(forms.Form):
 
 class ChargeAddForm(forms.Form):
     error_css_class = "error"
-    date = forms.DateTimeField(
-        widget = forms.DateTimeInput(attrs={'class': 'span2', 'placeholder': u'Fecha'}),
-        initial = timezone.now()
+    date = forms.DateField(
+        widget = extras.SelectDateWidget(attrs={'class': 'span1', 'placeholder': u'Fecha'})
     )
-    vendor = forms.ModelChoiceField(
-        Worker.objects,
-        widget = forms.Select(attrs={'class': 'span3', 'placeholder': u'Vendedor'})
-    )
+    # vendor = forms.ModelChoiceField(
+    #     Worker.objects,
+    #     widget = forms.Select(attrs={'class': 'span3', 'placeholder': u'Vendedor'})
+    # )
     quantity = forms.IntegerField(
         widget = forms.TextInput(attrs={'class': 'span1', 'placeholder': u'#'})
     )
@@ -82,18 +82,17 @@ class ChargeAddForm(forms.Form):
 
 class PaymentAddForm(forms.Form):
     error_css_class = "error"
-    date = forms.DateTimeField(
-        widget = forms.DateTimeInput(attrs={'class': 'span2', 'placeholder': u'Fecha'}),
-        initial = timezone.now()
+    date = forms.DateField(
+        widget = extras.SelectDateWidget(attrs={'class': 'span1', 'placeholder': u'Fecha'})
     )
     p_type = forms.ChoiceField(
         choices = PTYPE_CHOICES,
         widget = forms.Select(attrs={'class': 'span3', 'placeholder': u'Tipo'})
     )
-    collector = forms.ModelChoiceField(
-        Worker.objects,
-        widget = forms.Select(attrs={'class': 'span3', 'placeholder': u'Cobrador'})
-    )
+    # collector = forms.ModelChoiceField(
+    #     Worker.objects,
+    #     widget = forms.Select(attrs={'class': 'span3', 'placeholder': u'Cobrador'})
+    # )
     amount = forms.IntegerField(
         widget = forms.TextInput(attrs={'class': 'span2', 'placeholder': u'Monto'}),
         validators = [MinValueValidator(1)]

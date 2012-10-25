@@ -17,8 +17,8 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'openscience_erpargentina',
+        'ENGINE': 'django.db.backends.sqlite3', # postgresql_psycopg2',
+        'NAME': path.join(PROJECT_ROOT, pardir, 'database'), # 'openscience_erpargentina',
         'USER': 'openscience',
         'PASSWORD': 'elToby29',
         'HOST': 'postgresql1.alwaysdata.com',
