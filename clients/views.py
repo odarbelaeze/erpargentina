@@ -13,22 +13,10 @@ from django.shortcuts import render
 
 from django.utils import timezone
 
-from django.forms.models import modelformset_factory
 from django.forms.models import formset_factory
 
-from clients.models import Route
-from clients.models import Client
-from clients.models import Charge
-from clients.models import Payment
-
-from clients.forms import ClientForm
-from clients.forms import ChargeForm
-from clients.forms import PaymentForm
-from clients.forms import ChargeAddForm
-from clients.forms import PaymentAddForm
-from clients.forms import AddPaymentForm
-from clients.forms import AddChargeForm
-from clients.forms import ClientInfo
+from clients.models import *
+from clients.forms import *
 
 class LoginRequiredMixin(object):
     u"""Ensures that user must be authenticated in order to access view."""
@@ -72,6 +60,8 @@ def new_client(request, pk = 1):
     ChargeFormSet = formset_factory(ChargeAddForm, extra = 1)
     PaymentFormSet = formset_factory(PaymentAddForm, extra = 10)
 
+    tz = timezone.get_current_timezone()
+
     if request.method == 'POST':
         print "I'll do something cool."
         client_form = ClientInfo(request.POST, prefix = 'client')
@@ -99,10 +89,11 @@ def new_client(request, pk = 1):
             # Add the charges
 
             for form in charge_formset:
-                if form.is_valid():
+                if form.is_valid() and not form.cleaned_data == {}:
                     data = form.cleaned_data
+                    now = timezone.datetime(data['date'].year, data['date'].month, data['date'].day)
                     clt.charge_set.add(Charge(
-                        date = timezone.datetime(data['date'].year, data['date'].month, data['date'].day),
+                        date = timezone.make_aware(now, tz),
                         vendor = route.in_charge,
                         quantity = data['quantity'],
                         product = data['product'],
@@ -114,8 +105,9 @@ def new_client(request, pk = 1):
             for form in payment_formset:
                 if form.is_valid():
                     data = form.cleaned_data
+                    now = timezone.datetime(data['date'].year, data['date'].month, data['date'].day)
                     clt.payment_set.add(Payment(
-                        date = timezone.datetime(data['date'].year, data['date'].month, data['date'].day),
+                        date = timezone.make_aware(now, tz),
                         collector = route.in_charge,
                         p_type = data['p_type'],
                         amount = data['amount']

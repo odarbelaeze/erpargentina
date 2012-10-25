@@ -1,70 +1,75 @@
 {% extends "base.html" %}
         
 {% block content %}
-<form method="post" action="{% url route-client-add route_id %}">
-    {% csrf_token %}
+<div class="row-fluid">
+    <form method="post" action="{% url route-client-add route_id %}">
+        {% csrf_token %}
 
-    <legend>Información del cliente</legend>
-    {% if client_form.errors %}
-        <div class="alert alert-error">
-            <button type="button" class="close" data-dismiss="alert">×</button>
-            <h4>Se presentaron errores!</h4>
+        <legend>Información del cliente</legend>
+        {% if client_form.errors %}
+            <div class="alert alert-error">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <h4>Se presentaron errores!</h4>
+                <p> {{ client_form.non_field_errors|removetags:"ul li" }} </p>
+            </div>
+        {% endif %}
+        <div class="controls">
+            {{ client_form.full_name }}
         </div>
-    {% endif %}
-    <div class="controls">
-        {{ client_form.full_name }}
-    </div>
-    <div class="controls controls-row">
-        {{ client_form.identification }}
-        {{ client_form.address }}
-    </div>
-    <div class="controls">
-        {{ client_form.indication }}
-    </div>
-    <div class="controls controls-row">
-        {{ client_form.phone }}
-        {{ client_form.alter_phone }}
-    </div>
-
-    <legend>Recargos</legend>
-    {% if charge_formset.errors %}
-        <div class="alert alert-error">
-            <button type="button" class="close" data-dismiss="alert">×</button>
-            <h4>Se presentaron errores!</h4>
-            {{ charge_formset.errors }}
+        <div class="controls controls-row">
+            {{ client_form.identification }}
+            {{ client_form.address }}
         </div>
-    {% endif %}
-    {{ charge_formset.management_form }}
-    {% for form in charge_formset %}
-    <div class="controls controls-row">
-        {{ form.date }}
-        {{ form.vendor }}
-        {{ form.quantity }}
-        {{ form.product }}
-        {{ form.price }}
-    </div>
-    {% endfor %}
-
-    <legend>Abonos</legend>
-    {% if payment_formset.errors %}
-        <div class="alert alert-error">
-            <button type="button" class="close" data-dismiss="alert">×</button>
-            <h4>Se presentaron errores!</h4>
-            {{ payment_formset.errors }}
+        <div class="controls">
+            {{ client_form.indication }}
         </div>
-    {% endif %}
-    {{ payment_formset.management_form }}
-    {% for form in payment_formset %}
-    <div class="controls controls-row">
-        {{ form.date }}
-        {{ form.p_type }}
-        {{ form.collector }}
-        {{ form.amount }}
-    </div>
-    {% endfor %}
+        <div class="controls controls-row">
+            {{ client_form.phone }}
+            {{ client_form.alter_phone }}
+        </div>
 
-    <div class="form-actions">
-        <button type="submit" class="btn btn-primary">Guardar</button>
-    </div>
-</form>
+        <legend>Compras</legend>
+        {% if charge_formset.errors and not client_form.errors %}
+            <div class="alert alert-error">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <h4>Se presentaron errores!</h4>
+                <p> Debe indicar al menos una compra válida. </p>
+                {# {{ charge_formset.errors }} #}
+            </div>
+        {% endif %}
+        {{ charge_formset.management_form }}
+        {% for form in charge_formset %}
+        <div class="controls controls-row">
+            {{ form.date }}
+            {# {{ form.vendor }} #}
+            {{ form.quantity }}
+            {{ form.product }}
+            {{ form.price }}
+        </div>
+        {% endfor %}
+
+        <legend>Abonos</legend>
+        {% if payment_formset.errors and not client_form.errors %}
+            <div class="alert alert-error">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <h4>Se presentaron errores!</h4>
+                {# {{ payment_formset.errors }} #}
+                <p>Debe ingresar al menos un abono válido.</p>
+            </div>
+        {% endif %}
+        {{ payment_formset.management_form }}
+        {% for form in payment_formset %}
+        <div class="controls controls-row">
+            {{ form.date }}
+            {{ form.p_type }}
+            {# {{ form.collector }} #}
+            {{ form.amount }}
+        </div>
+        {% endfor %}
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Guardar</button>
+        </div>
+    </form>
+</div>
 {% endblock content %}

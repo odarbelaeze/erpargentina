@@ -7,10 +7,7 @@ from django.core.validators import MinValueValidator
 
 from stocks.models import Product
 
-from clients.models import Client
-from clients.models import Payment
-from clients.models import Charge
-from clients.models import PTYPE_CHOICES
+from clients.models import *
 
 from humanresources.models import Worker
 
@@ -33,31 +30,47 @@ class ClientInfo(forms.Form):
     error_css_class = "error"
     full_name = forms.CharField(
         max_length = 100,
-        widget = forms.TextInput(attrs={'class': 'span10', 'placeholder': u'Nombre completo'})
+        widget = forms.TextInput(attrs={'class': 'span8', 'placeholder': u'Nombre completo'})
     )
     identification = forms.CharField(
         max_length = 100,
-        widget = forms.TextInput(attrs={'class': 'span5', 'placeholder': u'Identificación (opcional)'}),
+        widget = forms.TextInput(attrs={'class': 'span4', 'placeholder': u'Identificación (opcional)'}),
         required = False
     )
     address = forms.CharField(
         max_length = 100,
-        widget = forms.TextInput(attrs={'class': 'span5', 'placeholder': u'Dirección'})
+        widget = forms.TextInput(attrs={'class': 'span4', 'placeholder': u'Dirección'})
     )
     indication = forms.CharField(
         max_length = 100,
-        widget = forms.TextInput(attrs={'class': 'span10', 'placeholder': u'Indicación (opcional)'}),
+        widget = forms.TextInput(attrs={'class': 'span8', 'placeholder': u'Indicación (opcional)'}),
         required = False
     )
     phone = forms.CharField(
         max_length = 100,
-        widget = forms.TextInput(attrs={'class': 'span5', 'placeholder': u'Teléfono'})
+        widget = forms.TextInput(attrs={'class': 'span4', 'placeholder': u'Teléfono'})
     )
     alter_phone = forms.CharField(
         max_length = 100,
-        widget = forms.TextInput(attrs={'class': 'span5', 'placeholder': u'Teléfono alternativo (opcional)'}),
+        widget = forms.TextInput(attrs={'class': 'span4', 'placeholder': u'Teléfono alternativo (opcional)'}),
         required = False
     )
+
+    def clean(self):
+        cleaned_data = super(ClientInfo, self).clean()
+        full_name = cleaned_data.get('full_name')
+        identification = cleaned_data.get('identification')
+
+        if full_name and identification:
+            try:
+                Client.objects.get(full_name = full_name, identification = identification)
+                print "A putno de lanzar la exception."
+                raise forms.ValidationError("Ya existe un cliente con este Nombre y esta Identificación.")
+            except forms.ValidationError, fve:
+                raise fve
+            except Exception, e:
+                pass
+        return cleaned_data
 
 class ChargeAddForm(forms.Form):
     error_css_class = "error"

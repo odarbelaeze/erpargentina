@@ -26,8 +26,8 @@
   margin-right: 10px;
 }
 
-.footer-fixed-bottom {
-  position: fixed;
+.footer-static-bottom {
+  position: static;
   right: 0;
   left: 0;
   bottom: 0;
