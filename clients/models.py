@@ -202,8 +202,8 @@ class Payment(models.Model):
 
     def balance(self):
         balance = self.client.total_charges() - self.amount
-        if self.client.payment_set.filter(date__lt = self.date).count() > 0:
-            balance -= self.client.payment_set.filter(date__lt = self.date).aggregate(models.Sum('amount'))['amount__sum']
+        if self.client.payment_set.filter(id__lt = self.id).count() > 0:
+            balance -= self.client.payment_set.filter(id__lt = self.id).aggregate(models.Sum('amount'))['amount__sum']
         print "balance", balance
         return balance
 
