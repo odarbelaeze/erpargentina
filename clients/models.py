@@ -196,9 +196,18 @@ class Payment(models.Model):
     amount.verbose_name = u'Monto'
 
     class Meta:
-        ordering = ['client', '-date']
+        ordering = ['client', 'date']
         verbose_name = u'Abono'
         verbose_name_plural = u'Abonos'
+
+    def balance(self):
+        balance = self.client.total_charges() - self.amount
+        if self.client.payment_set.filter(date__lt = self.date).count() > 0:
+            balance -= self.client.payment_set.filter(date__lt = self.date).aggregate(models.Sum('amount'))['amount__sum']
+        print "balance", balance
+        return balance
+
+    balance.short_description = u'Saldo'
 
     def save(self, *args, **kwargs):
         if self.amount > self.client.total_debt(): return

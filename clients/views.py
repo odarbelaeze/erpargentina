@@ -42,13 +42,13 @@ class ClientDetail(LoginRequiredMixin, DetailView):
         context = super(ClientDetail, self).get_context_data(**kwargs)
         try:
             context['form_charge'] = AddChargeForm(
-                initial = {'date': timezone.now(), 'collector': self.request.user.worker}
+                initial = {'date': timezone.now(), 'vendor': context['client'].route.in_charge}
             )
         except:
             context['form_charge'] = AddChargeForm(initial = {'date': timezone.now()})
         try:
             context['form_payment'] = AddPaymentForm(
-                initial = {'date': timezone.now(), 'collector': self.request.user.worker}
+                initial = {'date': timezone.now(), 'collector': context['client'].route.in_charge}
             )
         except:
             context['form_payment'] = AddPaymentForm(initial = {'date': timezone.now()})

@@ -43,29 +43,14 @@
         </tbody>
     </table>
 
-    <form class="form-horizontal" method="post" action="{% url client-charge-add client.id %}">
-        {% csrf_token %}
-        <legend>Nueva compra</legend>
-        {% for field in form_charge %}
-            {% include "field_snipet.html" %}
-        {% endfor %}
-        <div class="control-group">
-            <div class="controls">
-                <button type="submit" class="btn" action="{% url client-charge-add client.id %}">
-                    Comprar!
-                </button> 
-            </div>
-        </div>
-    </form>
-
-
     <h2>Abonos</h2>
     <table class="table table-bordered table-hover">
         <thead>
             <th class="span2">Tipo</th>
             <th class="span2">Fecha</th>
-            <th class="span6">Cobrador</th>
+            <th class="span4">Cobrador</th>
             <th class="span2">Monto</th>
+            <th class="span2">Saldo</th>
         </thead>
         <tbody>
         {% for payment in client.payment_set.all %}
@@ -74,28 +59,50 @@
                 <td>{{ payment.date|date|title }}</td>
                 <td>{{ payment.collector }}</td>
                 <td><span class="pull-right">{{ payment.amount|floatformat:2 }}</span></td>
+                <td><span class="pull-right">{{ payment.balance|floatformat:2 }}</span></td>
             </tr>
         {% endfor %}
             <tr class="info">
                 <th colspan=3>Total abonos</th>
                 <th><span class="pull-right">{{ client.total_payments|floatformat:2 }}</span></th>
+                <th><span class="pull-right">{{ client.total_debt|floatformat:2 }}</span></th>
             </tr>
         </tbody>
     </table>
 
-    <form class="form-horizontal" method="post" action="{% url client-payment-add client.id %}">
-        {% csrf_token %}
-        <legend>Nuevo abono</legend>
-        {% for field in form_payment %}
-            {% include "field_snipet.html" %}
-        {% endfor %}
-        <div class="control-group">
-            <div class="controls">
-                <button type="submit" class="btn" action="{% url client-payment-add client.id %}">
-                    Abonar!
-                </button> 
+<div class="row-fluid">
+    <div class="span6">
+        <form class="form-horizontal" method="post" action="{% url client-payment-add client.id %}">
+            {% csrf_token %}
+            <legend>Nuevo abono</legend>
+            {% for field in form_payment %}
+                {% include "field_snipet.html" %}
+            {% endfor %}
+            <div class="control-group">
+                <div class="controls">
+                    <button type="submit" class="btn" action="{% url client-payment-add client.id %}">
+                        Abonar!
+                    </button> 
+                </div>
             </div>
-        </div>
-    </form>
+        </form>
+    </div>
+    <div class="span6">
+        <form class="form-horizontal" method="post" action="{% url client-charge-add client.id %}">
+            {% csrf_token %}
+            <legend>Nueva compra</legend>
+            {% for field in form_charge %}
+                {% include "field_snipet.html" %}
+            {% endfor %}
+            <div class="control-group">
+                <div class="controls">
+                    <button type="submit" class="btn" action="{% url client-charge-add client.id %}">
+                        Comprar!
+                    </button> 
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 
 {% endblock detail %}
